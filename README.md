@@ -1,17 +1,24 @@
-# Vodafone Hotspot Captive Portal Auto-login
+# Vodafone Hotspot Captive Portal Auto-login (@BayernWlan specifically)
 
-This a is a script used to automatically login into Vodafone Hotspot captive portals. It is intended to be used with [Travelmate](https://forum.openwrt.org/t/travelmate-support-thread/5155) in OpenWRT routers.
+This a is a script used to automatically login into the Vodafone Hotspot captive portal used by @bayernWlan.
+Its intended use is ensuring headless (i.e. without display screen) linux devices necessary for study and research stay connected to the internet.
 
 ## Requirements
-
-Due to lazyness this script requires `jq` which can be installed with `opkg install jq` in OpenWRT. Apart from that it assumes `curl` and travelmate are installed.
-
-The script was tested on OpenWRT 21.02.0-rc3 with Travelmate 2.0.3-2.
+This script uses tools commonly preinstalled on Unix-based operating systems. Some formatting may be necessary to run on a different shell than bash.
 
 ## Usage
+First make it non-writable for security
+`$ chmod 555 net-login.sh`
 
-Put the [vodafone-hotspot.login](vodafone-hotspot.login) file into `/etc/travelmate/` and activate it as a Auto Login Script in the Travelmate Settings of the "Vodafone Hotspot" Wireless Station in Travelmate.
+move this script to /usr/bin/
+`$ sudo mv net-login.sh /usr/bin/`
 
-## Caveats
+Setup a cron job to run this script at reboot and every 10 minutes. In this example I use crontab for Raspberry Pi.
 
-At least in case of the Vodafone Hotspot this script was developed for, there was an automatic Wifi disconnect every 30 minutes by deauth from the hotspot AP. I resorted to only having the 2.4 Ghz radio as an AP and used the 5 Ghz radio only for connecting to the hotspot, otherwise clients would frequently be kicked out of the Wifi because it had to scan for the Hotspot again, disabling the AP master until it reconnected.
+`crontab -e`
+```
+#Check internet connection and reconnect if necessary every 10 minutes
+*/10 * * * * net-login.sh
+@reboot sleep 120 && /usr/bin/net-login.sh &
+```
+
