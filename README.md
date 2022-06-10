@@ -8,16 +8,18 @@ This script uses tools commonly preinstalled on Unix-based operating systems. So
 
 ## Usage
 First make it non-writable for security
+
 `$ chmod 555 net-login.sh`
 
 move this script to /usr/bin/
+
 `$ sudo mv net-login.sh /usr/bin/`
 
 Setup a cron job to run this script at reboot and every 10 minutes. In this example I use crontab for Raspberry Pi.
 
-`crontab -e`
+`$ crontab -e`
 ```
-#Check internet connection and reconnect if necessary every 10 minutes
+#Check internet connection and reconnect if necessary at boot and every 10 minutes
 */10 * * * * net-login.sh
 @reboot sleep 120 && /usr/bin/net-login.sh &
 ```
