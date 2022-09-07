@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # captive portal auto-login script for Vodafone Hotspot
+# Copyright (c) 2021 Sven Grunewaldt (strayer@olle-orks.org)
 # Copyright (c) 2022 Jacob Ludvigsen (jacob@strandmoa.no)
 # This is free software, licensed under the GNU General Public License v3.
 
